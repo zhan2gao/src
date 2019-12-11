@@ -1,0 +1,53 @@
+<launch>
+  <param name="/use_sim_time" value="true"/>
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="false"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="true"/>
+  <arg name="debug" default="false"/>
+  <arg name="verbose" default="false"/>
+  <arg name="world_name" default="worlds/empty.world"/>
+  <!--  <arg name="world_name" value="$(find mecanum_sim)/worlds/ICRA_3D_MAP_2.world"/>
+  -->
+  <!-- set command arguments -->
+  <arg unless="$(arg paused)" name="command_arg1" value=""/>
+  <arg     if="$(arg paused)" name="command_arg1" value="-u"/>
+  <arg unless="$(arg headless)" name="command_arg2" value=""/>
+  <arg     if="$(arg headless)" name="command_arg2" value="-r"/>
+  <arg unless="$(arg verbose)" name="command_arg3" value=""/>
+  <arg     if="$(arg verbose)" name="command_arg3" value="--verbose"/>
+  <arg unless="$(arg debug)" name="script_type" value="gzserver"/>
+  <arg     if="$(arg debug)" name="script_type" value="debug"/>
+<!-- <node name="odom_pub" pkg="my_odom" type="my_odom_node" output="screen" />
+ --><node name="odom_pub" pkg="my_odom" type="odom.py" output="screen" />
+<node name="path_pub" pkg="my_odom" type="path.py" output="screen" />
+<!-- <node pkg="tf" type="static_transform_publisher" name="world_to_odom" 
+         args="0 0 0 0 0 0 1.0 world odom 100" /> -->
+         <!-- <node pkg="tf" type="static_transform_publisher" name="odom_to_base" 
+         args="0 0 0 0 0 0 1.0 odom base_link 100" /> -->
+  <param name="robot_description"
+	 command="$(find xacro)/xacro.py '$(find mecanum_sim)/urdf/mecanum.xacro'" />
+ 
+
+  <!-- start gazebo server-->
+  <node name="gazebo" pkg="gazebo_ros" type="$(arg script_type)" respawn="false" output="screen"
+	args="$(arg command_arg1) $(arg command_arg2) $(arg command_arg3) $(arg world_name)" />
+
+  <!-- start gazebo client -->
+  <group if="$(arg gui)">
+    <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen"/>
+  </group>
+
+ 
+
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+	args="-urdf -model mecanum -y -0.8 -z 0.06 -param robot_description"/>
+<node
+    name="robot_state_publisher"
+    pkg="robot_state_publisher"
+    type="state_publisher" args = "-param robot_description" respawn="false" output="screen">
+
+  </node>
+  <include file="$(find mecanum_sim)/launch/amcl_demo.launch"/>
+
+</launch>

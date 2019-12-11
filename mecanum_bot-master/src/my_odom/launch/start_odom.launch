@@ -1,0 +1,4 @@
+<launch>
+<node name="odom_pub" pkg="my_odom" type="odom.cpp" output="screen" />
+<node name="path_pub" pkg="my_odom" type="path.py" output="screen" />
+</launch>

@@ -1,0 +1,2 @@
+mecanum_sim:my_odom
+-DCATKIN_DEVEL_PREFIX=/home/hyperion/Documents/ERAIITK/mecanum_bot/devel -DCMAKE_INSTALL_PREFIX=/home/hyperion/Documents/ERAIITK/mecanum_bot/install -G Unix Makefiles

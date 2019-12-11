@@ -1,0 +1,8 @@
+prefix=/home/hyperion/Documents/ERAIITK/mecanum_bot/install
+
+Name: mecanum_sim
+Description: Description of mecanum_sim
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/hyperion/Documents/ERAIITK/mecanum_bot/install/lib 
+Requires: 

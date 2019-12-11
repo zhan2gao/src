@@ -1,0 +1,8 @@
+prefix=/home/hyperion/Documents/ERAIITK/mecanum_bot/devel
+
+Name: my_odom
+Description: Description of my_odom
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/hyperion/Documents/ERAIITK/mecanum_bot/devel/lib 
+Requires: 
